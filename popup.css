@@ -142,3 +142,13 @@ button {
 #stopRecording {
   display: none;
 }
+
+.msg {
+  background-color: red;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+  margin-bottom: 10px;
+  display: none;
+}

@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   // GET THE SELECTORS OF THE BUTTONS
+  const msg = document.querySelector(".msg");
   const toggleMic = document.querySelector("#toggleMic");
   const toggleCamera = document.querySelector("#toggleCamera");
   const startRecordingButton = document.querySelector("#startRecording");
@@ -24,15 +25,15 @@ document.addEventListener("DOMContentLoaded", () => {
     chrome.storage.sync.get(
       ["micEnabled", "cameraEnabled", "isRecording"],
       (result) => {
-        const { micEnabled, cameraEnabled, isRecording } = result;
+        const { micEnabled, cameraEnabled, isRecording: recorded } = result;
         if (micEnabled !== undefined) {
           toggleMic.checked = micEnabled;
         }
         if (cameraEnabled !== undefined) {
           toggleCamera.checked = cameraEnabled;
         }
-        if (isRecording !== undefined) {
-          isRecording = isRecording;
+        if (recorded !== undefined) {
+          isRecording = recorded; // Update the outer isRecording variable
           updateButtonVisibility();
         }
       }
@@ -41,6 +42,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Initialize the state
   restoreState();
+
+  // Function to check if media recording is active
+  function isMediaRecordingActive(callback) {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      chrome.tabs.sendMessage(
+        tabs[0].id,
+        { action: "check_media_recording" },
+        function (response) {
+          if (!chrome.runtime.lastError) {
+            callback(response.isRecording);
+          }
+        }
+      );
+    });
+  }
+
+  // Check if media recording is active when the popup opens
+  isMediaRecordingActive((active) => {
+    isRecording = active;
+    updateButtonVisibility();
+    saveState(toggleMic.checked, toggleCamera.checked);
+  });
 
   // Adding event listeners
 
@@ -56,17 +79,21 @@ document.addEventListener("DOMContentLoaded", () => {
           function (response) {
             if (!chrome.runtime.lastError) {
               console.log(response);
-              isRecording = true; // Update recording state
+              isRecording = true;
               updateButtonVisibility();
-              saveState(micEnabled, cameraEnabled); // Save the state
+              saveState(micEnabled, cameraEnabled);
             } else {
-              console.log(chrome.runtime.lastError, "error line 64");
+              console.log(chrome.runtime.lastError, "error line 76");
             }
           }
         );
       });
     } else {
-      alert("Please enable both camera and microphone to start recording.");
+      msg.textContent = "PLEASE ENABLE CAMERA AND MICROPHONE";
+      msg.style.display = "block";
+      setTimeout(() => {
+        msg.style.display = "none";
+      }, 3000);
     }
   });
 
@@ -78,11 +105,13 @@ document.addEventListener("DOMContentLoaded", () => {
         function (response) {
           if (!chrome.runtime.lastError) {
             console.log(response);
-            isRecording = false; // Update recording state
+            isRecording = false;
             updateButtonVisibility();
-            saveState(toggleMic.checked, toggleCamera.checked); // Save the state
+            saveState(false, false);
+            toggleMic.checked = false;
+            toggleCamera.checked = false;
           } else {
-            console.log(chrome.runtime.lastError, "error line 79");
+            console.log(chrome.runtime.lastError, "error line 98");
           }
         }
       );

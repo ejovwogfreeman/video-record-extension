@@ -22,7 +22,7 @@
     }
   },
 
-  "host_permissions": ["http://*/", "https://*/*"],
+  "host_permissions": ["http://*/*", "https://*/*"],
 
   "permissions": ["scripting", "tabs", "activeTab", "storage"],
   "version": "1.0.0"
