@@ -1,0 +1,144 @@
+/* *{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+
+.content{
+    padding: 10px;
+    min-width: 300px;
+}
+
+.button_cont button{
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background: teal;
+    color: white;
+    width: 100%;
+
+}
+
+.button_cont button:hover{
+    box-shadow: 1px 0px 10p #eee;
+} */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  width: 300px;
+  padding: 20px;
+  font-family: "Raleway", sans-serif;
+}
+.logo-cont {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo-cont div {
+  display: flex;
+  align-items: center;
+}
+.logo-cont div svg {
+  margin-left: 5px;
+}
+.logo {
+  display: flex;
+  align-items: center;
+}
+.logo img {
+  width: 30px;
+}
+.logo h3 {
+  margin-left: 5px;
+}
+.toggle-mic label,
+.toggle-camera label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.toggle-mic input,
+.toggle-camera input {
+  margin-left: 10px;
+  display: none;
+}
+.slider {
+  width: 33px;
+  height: 20px;
+  background-color: #000435;
+  border-radius: 20px;
+  position: relative;
+  transition: 0.2s;
+}
+.slider:before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  left: 3.5px;
+  top: 4px;
+  transition: 0.2s;
+}
+input:checked + .slider {
+  background-color: #000435; /* Green when checked */
+}
+input:checked + .slider:before {
+  transform: translateX(12px);
+}
+.toggle-mic,
+.toggle-camera {
+  color: white;
+  color: #000435;
+  border: 1px solid #000435;
+  font-size: 18px;
+  border-radius: 15px;
+  width: 100%;
+  padding: 10px 10px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+button {
+  color: white;
+  background-color: #000435;
+  font-size: 18px;
+  border-radius: 15px;
+  width: 100%;
+  padding: 15px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+.screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.screen div {
+  text-align: center;
+  padding: 10px;
+}
+
+.cam {
+  display: flex;
+  align-items: center;
+  padding-top: 0px;
+}
+.cam svg {
+  margin-top: -12px;
+  margin-right: 5px;
+}
+
+#stopRecording {
+  display: none;
+}
